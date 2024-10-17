@@ -27,4 +27,5 @@ The netCDF files provided in this repository are generated from the following ra
 - The Lagrangian model Parcels v2.4.2 can be installed from: 
     * https://anaconda.org/conda-forge/parcels
     * https://oceanparcels.org
-- The ConvLSTM used in our study is based on the implementation of Liu et al. (2021) and is built using Pytorch (https://anaconda.org/pytorch/pytorch). 
+- The ConvLSTM model used in our study is built using Pytorch (https://anaconda.org/pytorch/pytorch), and its implementation is described in:
+    * Liu et al. (2021) https://doi.org/10.1175/MWR-D-20-0113.1
