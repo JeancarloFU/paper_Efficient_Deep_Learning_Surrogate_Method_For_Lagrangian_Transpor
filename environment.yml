@@ -1,4 +1,4 @@
-name: env_paperJMFU
+name: env_paper
 channels:
   - conda-forge
 dependencies:
@@ -8,4 +8,6 @@ dependencies:
   - netcdf4
   - xarray
   - tqdm
+  - pyproj
+  - scipy
   - jupyterlab
