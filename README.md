@@ -18,7 +18,7 @@ The simplified Lagrangian model (Eq. (4) of the manuscript) is implemented in th
 
 **Jup-lab:** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/JeancarloFU/paper_Efficient_Deep_Learning_Surrogate_Method_For_Lagrangian_Transport/main?urlpath=lab)
 
-### Information about raw numerical data 
+### Information about raw numerical data and the ConvLSTM
 The netCDF files provided in this repository are generated from the following raw data:
 
 - Eulerian data from the GETM/GOTM model, and its set-up is described in:
