@@ -8,7 +8,7 @@ in coastal environments. Available at SSRN: http://dx.doi.org/10.2139/ssrn.48153
 There are in total 5 NetCDF files. They can be used to run the surrogate and optimal prediction experiments and reproduce results from Figure 5 of the manuscript. They are provided inside the folder [data](https://github.com/JeancarloFU/paper_Efficient_Deep_Learning_Surrogate_Method_For_Lagrangian_Transport/blob/main/data).
 
 ### Sofware
-The environment used for the analysis is written in Python v3.8 and can be found in the file [environment.yml](https://github.com/JeancarloFU/paper_Efficient_Deep_Learning_Surrogate_Method_For_Lagrangian_Transport/blob/main/environment.yml).
+The environment used for the analysis uses Python v3.8 and can be found in the file [environment.yml](https://github.com/JeancarloFU/paper_Efficient_Deep_Learning_Surrogate_Method_For_Lagrangian_Transport/blob/main/environment.yml).
 
 ### Running the Notebooks
 The simplified Lagrangian model (Eq. (4) of the manuscript) is implemented in the notebook located in the folder [notebooks](https://github.com/JeancarloFU/paper_Efficient_Deep_Learning_Surrogate_Method_For_Lagrangian_Transport/blob/main/notebooks). Here, we also add all the necessary instructions to run the surrogate and optimal prediction experiments. The notebook can be run using any of the following instructions:

@@ -2,8 +2,8 @@ import numpy as np
 import xarray as xr
 from matplotlib import path
 
-#save trajectories of the patch----
-def save_track_data(dst,npa_per_dep,num_dep,dxp,dyp,l,save_file,file_out):
+#save trajectories of the particles released inside the patch----
+def save_particle_positions(dst,npa_per_dep,num_dep,dxp,dyp,l,save_file,file_out):
     dst["x"].attrs["long_name"]=f"particle position along GETM model x-axis"
     dst["x"].attrs["units"]=f"m"
     dst["y"].attrs["long_name"]=f"particle position along GETM model y-axis" 
@@ -16,9 +16,9 @@ def save_track_data(dst,npa_per_dep,num_dep,dxp,dyp,l,save_file,file_out):
 
 
 #get a matrix with particle status for each time step---
-def get_inoutp_dws(dst,bdr_dws):
-    #particles inside dws inoutp = 1
-    #particles outside dws inoutp = NaN
+def get_inout_particles_dws(dst,bdr_dws):
+    #particles inside dws inout_particles = 1
+    #particles outside dws inout_particles = NaN
     #
     #find if particles are inside DWS---
     radius=1e-10 #>0 to shrink Path(poligon) to exclude vertices and edges
@@ -26,15 +26,15 @@ def get_inoutp_dws(dst,bdr_dws):
     #to shrink path: if ccw (radius<0);  if cw (radius>0)
     pc=path.Path(bdr_dws,closed=True)
     pp=np.array([dst.x.values.flatten(),dst.y.values.flatten()]).T
-    inoutp = pc.contains_points(pp,radius=radius)*1. #points inside
-    inoutp[inoutp==0]=np.nan
+    inout_particles = pc.contains_points(pp,radius=radius)*1. #points inside
+    inout_particles[inout_particles==0]=np.nan
     var=list(dst.keys())[0] #'x' variable
-    inoutp=np.reshape(inoutp,dst[var].shape) #obs,trajectory=dst.x.shape
-    ds_inoutp=xr.zeros_like(dst[[var]]).rename({var:'inoutp'})
-    ds_inoutp['inoutp'].values=inoutp
-    ds_inoutp["inoutp"].attrs["long_name"]="index to check particles inside/outside dws"
-    ds_inoutp["inoutp"].attrs["info"]="inside dws = 1, outside dws = NaN"
-    return ds_inoutp
+    inout_particles=np.reshape(inout_particles,dst[var].shape) #obs,trajectory=dst.x.shape
+    ds_inout_particles=xr.zeros_like(dst[[var]]).rename({var:'inout_particles'})
+    ds_inout_particles['inout_particles'].values=inout_particles
+    ds_inout_particles["inout_particles"].attrs["long_name"]="index to check particles inside/outside dws"
+    ds_inout_particles["inout_particles"].attrs["info"]="inside dws = 1, outside dws = NaN"
+    return ds_inout_particles
 
 
 #xarray functions----

@@ -8,9 +8,9 @@ def get_statistics(dst,ds_inoutp):
     """
     obs=dst.dims['obs']
     #cm, cov
-    x=dst["x"]*ds_inoutp.inoutp
-    y=dst["y"]*ds_inoutp.inoutp
-    npin=ds_inoutp.inoutp.sum(dim='trajectory') 
+    x=dst["x"]*ds_inoutp.inout_particles
+    y=dst["y"]*ds_inoutp.inout_particles
+    npin=ds_inoutp.inout_particles.sum(dim='trajectory') 
     per_par=npin/npin.isel(obs=0)*100 #% of particles inside dws as a function of obs and tdep        
     cmx=x.mean(dim='trajectory')
     cmy=y.mean(dim='trajectory')#
@@ -21,42 +21,37 @@ def get_statistics(dst,ds_inoutp):
     #
     return cmx,cmy,dispxx,dispyy,dispxy,per_par,obs
 
-def save_statistics(cmx,cmy,covxx,covyy,covxy,npin,cpoint_lat,cpoint_lon,dxp,dyp,l,obs,file_out='stats_temp.nc'):
+def save_statistics(cmx,cmy,covxx,covyy,covxy,npin,cpoint_lat,cpoint_lon,dx_patch,dy_patch,length_patch,obs,save_file_statistics,file_statistics):
     ds=xr.Dataset()
     ds["npin"]=npin
     ds["npin"].attrs["long_name"]="percentage of particles inside dws"
-    #ds["cmx"]=xr.concat(cmx,dim='run')
     ds["cmx"]=cmx
     ds["cmx"].attrs["long_name"]="center of mass x-position"
     ds["cmx"].attrs["units"]="m"
-    #ds["cmy"]=xr.concat(cmx,dim='run')
     ds["cmy"]=cmy
     ds["cmy"].attrs["long_name"]="center of mass y-position"
     ds["cmy"].attrs["units"]="m"
-    #ds["covxx"]=xr.concat(covxx,dim='run')
     ds["dispxx"]=covxx
     ds["dispxx"].attrs["long_name"]="dispersion xx-component"
-    ds["dispxx"].attrs["units"]="m2/s"
-    #ds["covyy"]=xr.concat(covyy,dim='run')
+    ds["dispxx"].attrs["units"]="m2"
     ds["dispyy"]=covyy
     ds["dispyy"].attrs["long_name"]="dispersion yy-component"
-    ds["dispyy"].attrs["units"]="m2/s"
-    #ds["covxy"]=xr.concat(covxy,dim='run')
+    ds["dispyy"].attrs["units"]="m2"
     ds["dispxy"]=covxy
     ds["dispxy"].attrs["long_name"]="dispersion xy-component"
-    ds["dispxy"].attrs["units"]="m2/s"
+    ds["dispxy"].attrs["units"]="m2"
     ds["obs"]=obs
     ds["obs"].attrs["long_name"] = "tracking time"
     ds["obs"].attrs["units"] = "day"
-    ds.attrs["info1_cloud"] = f"central coord of the cloud (lat,lon) = {cpoint_lat,cpoint_lon}"
-    ds.attrs["info2_cloud"] = f"particles were released in {dxp}mx{dyp}m grid cells inside {l}km square"
-    #ds.to_netcdf(file_out)
+    ds.attrs["info1_cloud"] = f"central coord of the patch (lat,lon) = {cpoint_lat,cpoint_lon}"
+    ds.attrs["info2_cloud"] = f"particles were released in {dx_patch}mx{dy_patch}m grid cells inside {length_patch}m square"
+    if save_file_statistics: ds.to_netcdf(file_statistics)
     return ds
 
-def get_bins(xmid,ymid):
-    dxx=np.round(np.diff(xmid).mean()); dyy=np.round(np.diff(ymid).mean())
-    xedges=np.arange(xmid.min()-dxx/2,xmid.max()+dxx,dxx)
-    yedges=np.arange(ymid.min()-dyy/2,ymid.max()+dyy,dyy)
+def get_bins(xcenter,ycenter):
+    dxx=np.round(np.diff(xcenter).mean()); dyy=np.round(np.diff(ycenter).mean())
+    xedges=np.arange(xcenter.min()-dxx/2,xcenter.max()+dxx,dxx)
+    yedges=np.arange(ycenter.min()-dyy/2,ycenter.max()+dyy,dyy)
     return xedges,yedges
 
 def binning_particles(xp,yp,xedges,yedges):
